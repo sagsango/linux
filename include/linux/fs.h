@@ -447,6 +447,32 @@ struct address_space_operations {
 
 extern const struct address_space_operations empty_aops;
 
+/*
+ *
+ * XXX:
+ *  This is a very poular data-structure
+ *  1. shared  mmaped files
+ *      mm_struct -> list<vm_area_struct>
+ *      vm_area_struct -> adress_space
+ *      address_space -> inode and struct xarray i_pages (all the file pages)
+ *
+ *  2. struct file:
+ *      struct address_space    *f_mapping;
+ *  3. struct inode:
+ *      struct address_space    *i_mapping;
+ *
+ *      For a regular file:
+ *          file->f_mapping = inode->i_mapping
+ *
+ *      But for mmaped file with private flag
+ *          file->f_mapping != inode->i_mapping
+ *   4. struct page:
+ *      struct address_space *mapping;
+ *
+ *      these pages belongs to the some private
+ *      mmaped files, so they can be flushed
+ *      with the hep of the metadata
+ */
 /**
  * struct address_space - Contents of a cacheable, mappable object.
  * @host: Owner, either the inode or the block_device.
@@ -652,6 +678,11 @@ struct inode {
 
 	const struct inode_operations	*i_op;
 	struct super_block	*i_sb;
+    /* XXX:
+     * file's page cache
+     * which is points to same object as inode's page cache for reg file
+     * but diff in case of private mmaped files
+     */
 	struct address_space	*i_mapping;
 
 #ifdef CONFIG_SECURITY
@@ -1028,6 +1059,14 @@ struct file {
 	/* Used by fs/eventpoll.c to link all the hooks to this file */
 	struct hlist_head	*f_ep;
 #endif /* #ifdef CONFIG_EPOLL */
+    /* XXX:
+     *  This is the file's page cache
+     *  which points to the inode's page 
+     *  cache for the regular files.
+     *
+     *  But it is diff for the private
+     *  mmaped files
+     */
 	struct address_space	*f_mapping;
 	errseq_t		f_wb_err;
 	errseq_t		f_sb_err; /* for syncfs */

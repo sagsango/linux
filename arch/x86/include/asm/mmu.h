@@ -17,6 +17,13 @@
 /* Allow LAM and SVA coexisting */
 #define MM_CONTEXT_FORCE_TAGGED_SVA	3
 
+/* XXX:
+ * For x86 architecture this is used in mm_struct
+ * tlb flush metadata
+ * pkey metadata
+ * page_table metadata
+ */
+
 /*
  * x86 has arch-specific MMU state beyond what lives in mm_struct.
  */

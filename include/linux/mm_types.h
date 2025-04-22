@@ -33,6 +33,11 @@ struct address_space;
 struct mem_cgroup;
 
 /*
+ * XXX:
+ * This is the physical page/frame which will get mapped to the page
+ * table, unlink xv6 it have metadata too
+ */
+/*
  * Each physical page in the system has a struct page associated with
  * it to keep track of whatever it is we are using the page for at the
  * moment. Note that we have no way to track which tasks are using
@@ -82,6 +87,11 @@ struct page {
 	 */
 	union {
 		struct {	/* Page cache and anonymous pages */
+            /*
+             * XXX:
+             *  pages will be the node of the lru cache list
+             *  so here we will track them
+             */
 			/**
 			 * @lru: Pageout list, eg. active_list protected by
 			 * lruvec->lru_lock.  Sometimes used as a generic list
@@ -102,6 +112,11 @@ struct page {
 				struct list_head buddy_list;
 				struct list_head pcp_list;
 			};
+            /* XXX:
+             * This is page-cache/private mapping of files
+             * Because end of the day these pages will be
+             * flushed to the files-page cache
+             */
 			/* See page-flags.h for PAGE_MAPPING_FLAGS */
 			struct address_space *mapping;
 			union {
@@ -611,6 +626,19 @@ struct vma_numab_state {
 };
 
 /*
+ * XXX:
+ *      What if the same file is mmaped to multiple process?
+ *      I though we could have one shared vm_area_struct, but thats incorrect
+ *      actually mmaped area depends on the phycial pages/frame rather than
+ *      the vm_area_struct, becasue different task_struct can map that file
+ *      to different virtual address, so vm_area_struct will be different
+ *      so vm_area_struct will belongs to only one mm_struct.
+ *
+ *      We keep track of same mmaped file area by struct address_space
+ *      which is represented as shared struct as data member which points
+ *      to the rbtree which cantains the shared file pages 
+ */
+/*
  * This struct describes a virtual memory area. There is one of these
  * per VM-area/task. A VM area is any part of the process virtual memory
  * space that has a special rule for the page-fault handlers (ie a shared
@@ -664,6 +692,12 @@ struct vm_area_struct {
 	bool detached;
 #endif
 
+    /*
+     * XXX:
+     * This is the address_space where multiple vm_area_struct will points to 
+     * the same address_space because the same file is mmaped to diff mm_struct or 
+     * task_struct's mm_struct
+     */
 	/*
 	 * For areas with an address space and backing store,
 	 * linkage into the address_space->i_mmap interval tree.
@@ -674,6 +708,10 @@ struct vm_area_struct {
 		unsigned long rb_subtree_last;
 	} shared;
 
+    /* XXX:
+     *  here private mapping will be present 
+     *  heap, stack, or private anonymous mappings
+     */
 	/*
 	 * A file's MAP_PRIVATE vma can be in both i_mmap tree and anon_vma
 	 * list, after a COW of one of the file pages.	A MAP_SHARED vma
@@ -690,6 +728,11 @@ struct vm_area_struct {
 	/* Information about our backing store: */
 	unsigned long vm_pgoff;		/* Offset (within vm_file) in PAGE_SIZE
 					   units */
+
+    /*
+     * XXX:
+     *  As file can be mmaped to VM, with PRIVATE flag
+     */
 	struct file * vm_file;		/* File we map to (can be NULL). */
 	void * vm_private_data;		/* was vm_pte (shared mem) */
 
@@ -748,7 +791,11 @@ struct mm_struct {
 			atomic_t mm_count;
 		} ____cacheline_aligned_in_smp;
 
-		struct maple_tree mm_mt;
+		struct maple_tree mm_mt; /* XXX: Contains the vm_area_struct
+					  * key as the virtual adress range
+					  * This is for quick lookup, and it used to
+					  * to be a linked list, which was slow 
+					  */
 #ifdef CONFIG_MMU
 		unsigned long (*get_unmapped_area) (struct file *filp,
 				unsigned long addr, unsigned long len,
@@ -762,7 +809,7 @@ struct mm_struct {
 		unsigned long mmap_compat_legacy_base;
 #endif
 		unsigned long task_size;	/* size of task vm space */
-		pgd_t * pgd;
+		pgd_t * pgd; /* XXX: Page table */
 
 #ifdef CONFIG_MEMBARRIER
 		/**
@@ -878,8 +925,12 @@ struct mm_struct {
 		struct linux_binfmt *binfmt;
 
 		/* Architecture-specific MM context */
-		mm_context_t context;
-
+		mm_context_t context; /* XXX:
+                                       This is the place where pkey metadata is present 
+                                       And tlb flush related data
+                                       And page table at architecture lavel
+                                       vdso
+                               */ 
 		unsigned long flags; /* Must use atomic bitops to access */
 
 #ifdef CONFIG_AIO
@@ -897,7 +948,7 @@ struct mm_struct {
 		 * new_owner->mm == mm
 		 * new_owner->alloc_lock is held
 		 */
-		struct task_struct __rcu *owner;
+		struct task_struct __rcu *owner; /* XXX: This is the thread group leader */
 #endif
 		struct user_namespace *user_ns;
 
