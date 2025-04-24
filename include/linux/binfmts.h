@@ -17,12 +17,21 @@ struct coredump_params;
  */
 struct linux_binprm {
 #ifdef CONFIG_MMU
+    /*
+     * XXX:
+     *  Temporarly, agrv and envp are staged here
+     */
 	struct vm_area_struct *vma;
 	unsigned long vma_pages;
 #else
 # define MAX_ARG_PAGES	32
 	struct page *page[MAX_ARG_PAGES];
 #endif
+    /*
+     * XXX:
+     * This is the new page table which is being created
+     * during the exec
+     */
 	struct mm_struct *mm;
 	unsigned long p; /* current top of mem */
 	unsigned long argmin; /* rlimit marker for copy_strings() */

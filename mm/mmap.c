@@ -1879,6 +1879,11 @@ struct vm_area_struct *find_vma_intersection(struct mm_struct *mm,
 }
 EXPORT_SYMBOL(find_vma_intersection);
 
+/*
+ * XXX:
+ *  Finds the vma from the mm_struct for given address
+ *  with the help of maple tree.
+ */
 /**
  * find_vma() - Find the VMA for a given address, or the next VMA.
  * @mm: The mm_struct to check

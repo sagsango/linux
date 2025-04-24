@@ -2256,6 +2256,11 @@ struct affinity_context {
 
 extern s64 update_curr_common(struct rq *rq);
 
+/*
+ * XXX:
+ *  This is general scheduling struct API
+ *  which is present in every task_struct
+ */
 struct sched_class {
 
 #ifdef CONFIG_UCLAMP_TASK

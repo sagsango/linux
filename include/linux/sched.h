@@ -794,6 +794,13 @@ struct task_struct {
 	int				normal_prio;
 	unsigned int			rt_priority;
 
+    /*
+     * XXX:
+     * se : will be used in case of sched_class = fair_sched_class; => CFS => Default/Normal
+     * rt : will be used in case of sched_class = rt_sched_class; => Real Time Scheduling
+     * dl : will be used in case of sched_class = dl_sched_class; => deadline scheduling
+     * dl_server : will be used in case of deadline shceduling for a group of process.
+     */
 	struct sched_entity		se;
 	struct sched_rt_entity		rt;
 	struct sched_dl_entity		dl;
@@ -991,6 +998,11 @@ struct task_struct {
 	/* Recipient of SIGCHLD, wait4() reports: */
 	struct task_struct __rcu	*parent;
 
+    /*
+     *
+     * XXX:
+     *  task struct's relationships
+     */
 	/*
 	 * Children/sibling form the list of natural children:
 	 */

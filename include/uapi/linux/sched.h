@@ -5,6 +5,12 @@
 #include <linux/types.h>
 
 /*
+ *
+ * XXX:
+ *  These flags are the million doller ideas.
+ *  People have created bussiness around it.
+ */
+/*
  * cloning flags:
  */
 #define CSIGNAL		0x000000ff	/* signal mask to be sent at exit */
@@ -108,6 +114,9 @@ struct clone_args {
 #define CLONE_ARGS_SIZE_VER1 80 /* sizeof second published struct */
 #define CLONE_ARGS_SIZE_VER2 88 /* sizeof third published struct */
 
+/* XXX:
+ *  These are the scheduling pliclies
+ */
 /*
  * Scheduling policies
  */

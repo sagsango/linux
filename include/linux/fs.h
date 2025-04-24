@@ -2914,6 +2914,13 @@ static inline int get_write_access(struct inode *inode)
 {
 	return atomic_inc_unless_negative(&inode->i_writecount) ? 0 : -ETXTBSY;
 }
+/*
+ * XXX:
+ *  when we are doing exec then we deny the write access to the file
+ *  called via :do_execveat_common() -> alloc_bprm() -> do_open_execat()
+ *             -> do_filp_open() & deny_write_access()
+ *  see the last comment just above it.
+ */
 static inline int deny_write_access(struct file *file)
 {
 	struct inode *inode = file_inode(file);

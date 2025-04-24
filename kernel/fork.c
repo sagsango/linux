@@ -1247,7 +1247,10 @@ static void mm_init_uprobes_state(struct mm_struct *mm)
 	mm->uprobes_state.xol_area = NULL;
 #endif
 }
-
+/*
+ * XXX:
+ *  Get called in case of exec to create new mm
+ */
 static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
 	struct user_namespace *user_ns)
 {
@@ -1270,6 +1273,15 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
 	spin_lock_init(&mm->arg_lock);
 	mm_init_cpumask(mm);
 	mm_init_aio(mm);
+    /* XXX:
+     * So whoever did the exec becomes the owner after that 
+     * lets say we have t1, t2, t3 and currently t1 is the 
+     * thread group leader so owner of the mm
+     *
+     * Now t2 did exec (we know t1 & t3 will be killed..
+     * TODO: make sure!) and then t2 will become the owne
+     * in the new exec processes created
+     */
 	mm_init_owner(mm, p);
 	mm_pasid_init(mm);
 	RCU_INIT_POINTER(mm->exe_file, NULL);

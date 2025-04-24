@@ -134,6 +134,10 @@ static inline void mm_reset_untag_mask(struct mm_struct *mm)
 extern void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk);
 
 /*
+ * XXX:
+ *  mm_struct's arch spesific context
+ */
+/*
  * Init a new mm.  Used on mm copies, like at fork()
  * and on mm's that are brand-new, like at execve().
  */

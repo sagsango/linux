@@ -1128,7 +1128,10 @@ static struct vm_area_struct *gup_vma_lookup(struct mm_struct *mm,
 	return NULL;
 #endif
 }
-
+/*
+ * XXX:
+ *  Get the phycial pages from process's page table
+ */
 /**
  * __get_user_pages() - pin user pages in memory
  * @mm:		mm_struct of target mm

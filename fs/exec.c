@@ -195,6 +195,16 @@ static void acct_arg_size(struct linux_binprm *bprm, unsigned long pages)
 	add_mm_counter(mm, MM_ANONPAGES, diff);
 }
 
+/*
+ * XXX:
+ *  How to access a physical page (struct page)
+ *  1. mm_struct -> vm_area_struct -> address_space -> page
+ *  2. mm_struct->pgd
+ *  3. mm_struct -> mm_mt -> vm_area_struct -> vm_file -> f_mapping -> address_space -> i_pages -> struct page
+ *  4. mm_struct -> pgd -> page table -> PTE  -> struct page
+ *  5. ..
+ *  6. ..
+ */
 static struct page *get_arg_page(struct linux_binprm *bprm, unsigned long pos,
 		int write)
 {
@@ -1575,6 +1585,10 @@ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename, int fl
 
 		bprm->filename = bprm->fdpath;
 	}
+    /* TODO:
+     *  why interp is exec file itself, It should be taken from the elf's entry
+     *
+     */
 	bprm->interp = bprm->filename;
 
 	retval = bprm_mm_init(bprm);
