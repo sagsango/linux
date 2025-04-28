@@ -48,6 +48,11 @@ struct address_space;
 typedef void (bh_end_io_t)(struct buffer_head *bh, int uptodate);
 
 /*
+ * XXX:
+ *  this a block of the filesystem.
+ *  it is more optimized unlike xv6 disk blocks (in memory)
+ */
+/*
  * Historically, a buffer_head was used to map a single block
  * within a page, and of course as the unit of I/O through the
  * filesystem and block layers.  Nowadays the basic I/O unit

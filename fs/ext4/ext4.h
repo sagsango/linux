@@ -1487,6 +1487,10 @@ struct ext4_orphan_info {
 };
 
 /*
+ * XXX:
+ *  ext4 super block
+ */
+/*
  * fourth extended-fs super-block data in memory
  */
 struct ext4_sb_info {

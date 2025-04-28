@@ -258,6 +258,10 @@ typedef unsigned int blk_qc_t;
 #define BLK_QC_T_NONE		-1U
 
 /*
+ * XXX:
+ *  This is the block io operation unit
+ */
+/*
  * main unit of I/O for the block layer and lower layers (ie drivers and
  * stacking drivers)
  */

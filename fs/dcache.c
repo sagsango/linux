@@ -78,6 +78,15 @@ __cacheline_aligned_in_smp DEFINE_SEQLOCK(rename_lock);
 
 EXPORT_SYMBOL(rename_lock);
 
+/*
+ *
+ * XXX:
+ *  This is the dentry cache
+ *  <parent dentry ptr(struct dentry)>:struct dentry
+ *  This is used for fast lookups.
+ *  Incase of nonexistance direntry, cache will create an entry with neg value
+ *  This is fast lookup freqent bad dentries
+ */
 static struct kmem_cache *dentry_cache __ro_after_init;
 
 const struct qstr empty_name = QSTR_INIT("", 0);
