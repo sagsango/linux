@@ -116,6 +116,17 @@ struct clone_args {
 
 /* XXX:
  *  These are the scheduling pliclies
+ *  
+ *  deadline scheduling:
+ *      SCHED_DEADLINE 
+ *  Real-Time:
+ *      SCHED_FIFO
+ *      SCHED_RR
+ *  Fair:
+ *      SCHED_NORMAL
+ *      SCHED_BATCH
+ *  Idle:
+ *      SCHED_IDLE
  */
 /*
  * Scheduling policies
