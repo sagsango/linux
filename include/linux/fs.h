@@ -1349,6 +1349,10 @@ struct super_block {
 	 * There is no need to put them into separate cachelines.
 	 */
 	struct list_lru		s_dentry_lru;
+    /*
+     * XXX: super blocks inode cache
+     *      cache is per superblock
+     */
 	struct list_lru		s_inode_lru;
 	struct rcu_head		rcu;
 	struct work_struct	destroy_work;
