@@ -166,21 +166,60 @@ extern int sched_rr_timeslice;
  * Single value that denotes runtime == period, ie unlimited time.
  */
 #define RUNTIME_INF		((u64)~0ULL)
-
+/*
+ * XXX:
+ * SCHED_IDLE = idle_plicy
+ *
+ * These tasks get scheduled only when CPU is idle
+ * These are some cleanup or background tasks
+ */
 static inline int idle_policy(int policy)
 {
 	return policy == SCHED_IDLE;
 }
+/*
+ * XXX:
+ * SCHED_NORMAL = normal or cfs or fair policy
+ *
+ * Default policy, where CFS tries to give eveyone
+ * same virual runtime, and tasks are pushed into
+ * RB tree, and the least virual runtime tasks is
+ * chossen first (also NICE value effect the wait)
+ */
+
+/*
+ * XXX:
+ * SCHED_BATH and SCHED_NOMAL
+ * are failr or cfs policies; but
+ * BATCH is for background taks
+ * which are non interactive so
+ * they have longer cpu time-slice
+ */
 static inline int fair_policy(int policy)
 {
 	return policy == SCHED_NORMAL || policy == SCHED_BATCH;
 }
 
+/* XXX:
+ * FIFO & RR are real time policies
+ * but unlike FIFO (where context which happes only when
+ * process yields or exit), RR give fixed time slice to
+ * eveyone
+ */
 static inline int rt_policy(int policy)
 {
 	return policy == SCHED_FIFO || policy == SCHED_RR;
 }
 
+/*
+ * XXX:
+ * SCHED_DEADLINE for the deadline taks
+ * who get scheduled based on deadline, so
+ * earliest deadline task will get scheduled
+ * first.
+ *
+ * Used in robotics etc.
+ */
 static inline int dl_policy(int policy)
 {
 	return policy == SCHED_DEADLINE;
