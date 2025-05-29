@@ -6732,6 +6732,12 @@ static void __sched notrace __schedule(unsigned int sched_mode)
 	}
 }
 
+/*
+ * XXX:
+ * Called by do_exit() after the cleanup
+ * to switch to the new processes, by 
+ * calling the scheduler
+ */
 void __noreturn do_task_dead(void)
 {
 	/* Causes final put_task_struct in finish_task_switch(): */

@@ -532,6 +532,20 @@ assign_new_owner:
 #endif /* CONFIG_MEMCG */
 
 /*
+ * XXX:
+ * Only called by do_exit()
+ * I am curius what is going on in exit_mm
+ * We are in kernel space and we will not 
+ * be returning back to the userspace so
+ * we can free the userspace physical frame
+ * but still our half or the page table 
+ * which is higher address & kernel mapping
+ *  & shared will be needed. But still we cant 
+ *  just drop our page table unless we switch
+ *  to the kernel page table and behave like
+ *  kernel thread.
+ */
+/*
  * Turn us into a lazy TLB process if we
  * aren't already..
  */
@@ -613,6 +627,11 @@ static struct task_struct *find_child_reaper(struct task_struct *father,
 	return father;
 }
 
+/*
+ *
+ * XXX:
+ * Parentless task_struct handling
+ */
 /*
  * When we die, we re-parent all our children, and try to:
  * 1. give them to another thread in our thread group, if such a member exists
@@ -888,6 +907,11 @@ void __noreturn do_exit(long code)
 	flush_ptrace_hw_breakpoint(tsk);
 
 	exit_tasks_rcu_start();
+    /*
+     * XXX:
+     * Here we sned SIGCHLD toi parent 
+     * and and few other notifications
+     */
 	exit_notify(tsk, group_dead);
 	proc_exit_connector(tsk);
 	mpol_put_task_policy(tsk);
@@ -919,6 +943,11 @@ void __noreturn do_exit(long code)
 	exit_tasks_rcu_finish();
 
 	lockdep_free_task(tsk);
+    /*
+     * XXX:
+     * Call scheduler ro switch to another
+     * process
+     */
 	do_task_dead();
 }
 
@@ -1745,6 +1774,13 @@ Efault:
 	return -EFAULT;
 }
 
+/*
+ *
+ * XXX:
+ * wait() system call, which blocks
+ * untill one of the children get exited
+ * and frees child resources.
+ */
 long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
 		  struct rusage *ru)
 {
