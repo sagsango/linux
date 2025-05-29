@@ -473,6 +473,12 @@ extern const struct address_space_operations empty_aops;
  *      mmaped files, so they can be flushed
  *      with the hep of the metadata
  */
+/*
+ *
+ * XXX:
+ *  Modern kernel does not maintain the block cache.
+ *  only page cache.
+ */
 /**
  * struct address_space - Contents of a cacheable, mappable object.
  * @host: Owner, either the inode or the block_device.
