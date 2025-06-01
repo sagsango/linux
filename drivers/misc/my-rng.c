@@ -1,3 +1,44 @@
+/*
+ *
+ *
+ *
+
+ - We have virtual machine Qemu to run the kernel
+ - Means we dont have any actual hardware
+ - Mean when we are doing memory reads, they are intercepted by the qemu (specially MemIO)
+ - 
+ - So we will notice that this device driver nither having interrupt handler nor doing the polling.
+ - How the device driver is sure that the when it readring the random number, through ioread32(), it gets the correct and sequencial response.
+ - ioread32() is getting intercepted by the qemu.
+
+
+
+User-space: ioctl(MY_RNG_GET_RANDOM)
+  ↓
+Kernel Module: dev_ioctl -> ioread32(mmio_base + 0x0)
+  ↓
+Kernel: Translates mmio_base to physical address (BAR0)
+  ↓
+CPU: Issues memory read to PCI device address
+  ↓
+QEMU: Traps MMIO access, calls mmio_read(opaque, 0x0, 4)
+  ↓
+QEMU: mmio_read generates rand(), returns value
+  ↓
+Kernel: ioread32 returns random number
+  ↓
+Kernel Module: Copies number to user-space
+  ↓
+User-space: Receives random number
+
+
+
+ *
+ *
+ *
+ */
+
+
 #include <linux/ioctl.h>
 #include <linux/init.h>
 #include <linux/module.h>
