@@ -135,7 +135,11 @@ void __irq_wake_thread(struct irq_desc *desc, struct irqaction *action)
 
 	wake_up_process(action->thread);
 }
-
+/*
+ *
+ * XXX:
+ *  all the interrups handler will be revoked here
+ */
 irqreturn_t __handle_irq_event_percpu(struct irq_desc *desc)
 {
 	irqreturn_t retval = IRQ_NONE;
@@ -198,6 +202,22 @@ irqreturn_t handle_irq_event_percpu(struct irq_desc *desc)
 		note_interrupt(desc, retval);
 	return retval;
 }
+
+/*
+ * XXX:
+ *  TODO: Verify
+ *  This is the main interrupt handler which will be called,
+ *  when interrupt controller sends and interrupt
+ *
+ *  by default the current interrupt line is disabled
+ *
+ *  (entry point of interrupt from controler to cpu)
+ *
+ *  during this point either this interrupt pin/number
+ *  or all pin/interrupts will be disabled by default 
+ *  when controler sends it to cpu, now cpu will decide
+ *  what to enable and when
+ */
 
 irqreturn_t handle_irq_event(struct irq_desc *desc)
 {

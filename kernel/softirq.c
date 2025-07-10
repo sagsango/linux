@@ -56,6 +56,28 @@ DEFINE_PER_CPU_ALIGNED(irq_cpustat_t, irq_stat);
 EXPORT_PER_CPU_SYMBOL(irq_stat);
 #endif
 
+/*
+ * XXX:
+ *  Bottom half, sort_irqs:
+ *  There are the functions which have to be executaed.
+ *  These are the deffered task from the interrupt handler.
+ *
+ *
+ *  Interrup handler:
+ *      When interrupt handler is executing, by default the
+ *      interrupt line is disabled in interrupt controller
+ *      systems wise (no cpu will respond to that interrupt)
+ *      additially during registering of that handler we can
+ *      specify the falg to disable all the interrupt only in
+ *      currect CPU.
+ *
+ *      So, when interrup handler starts executing.
+ *      1. Current interrupt line is disable system wise(all CPU)
+ *      2. All the interrupt can be disabled on curent CPU (optionaly)
+ *      3. Interrup handler can enable all the interrupts -
+ *          including current interrup line (during execution)
+ *
+ */
 static struct softirq_action softirq_vec[NR_SOFTIRQS] __cacheline_aligned_in_smp;
 
 DEFINE_PER_CPU(struct task_struct *, ksoftirqd);
