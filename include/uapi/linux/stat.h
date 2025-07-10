@@ -18,6 +18,16 @@
 #define S_ISGID  0002000
 #define S_ISVTX  0001000
 
+/*
+ * XXX:
+ *  struct inode {
+ *      ...
+ *      umode_t i_mode;
+ *      ...
+ *  };
+ *
+ *  mode can tell you type of inode
+ */
 #define S_ISLNK(m)	(((m) & S_IFMT) == S_IFLNK)
 #define S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)
 #define S_ISDIR(m)	(((m) & S_IFMT) == S_IFDIR)
