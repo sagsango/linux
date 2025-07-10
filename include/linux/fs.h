@@ -671,6 +671,10 @@ struct fsnotify_mark_connector;
  * of the 'struct inode'
  */
 struct inode {
+    /*
+     * XXX:
+     *  mode can tell you type of inode (regular, pipe, socket etc)
+     */
 	umode_t			i_mode;
 	unsigned short		i_opflags;
 	kuid_t			i_uid;
@@ -1051,6 +1055,16 @@ struct file {
 	const struct cred	*f_cred;
 	struct file_ra_state	f_ra;
 	struct path		f_path;
+/*
+ * XXX: How to get the file type
+ * umode_t mode = filp->f_inode->i_mode;
+ *  S_ISREG(mode)   // Regular file
+ *  S_ISCHR(mode)   // Character device
+ *  S_ISBLK(mode)   // Block device
+ *  S_ISFIFO(mode)  // FIFO (pipe)
+ *  S_ISSOCK(mode)  // Socket
+ *  S_ISDIR(mode)   // Directory
+ */
 	struct inode		*f_inode;	/* cached value */
 	const struct file_operations	*f_op;
 
