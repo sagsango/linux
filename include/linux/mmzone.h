@@ -816,6 +816,13 @@ enum zone_type {
 
 #define ASYNC_AND_SYNC 2
 
+/*
+ * XXX:
+ *  Physical memory is devided into multiple zones.
+ *  Physical memory zones struct
+ *  See the enum above for all types of zone
+ *  Zone contains the physical pages
+ */
 struct zone {
 	/* Read-mostly fields */
 
