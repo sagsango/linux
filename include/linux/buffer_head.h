@@ -51,7 +51,22 @@ typedef void (bh_end_io_t)(struct buffer_head *bh, int uptodate);
  * XXX:
  *  this a block of the filesystem.
  *  it is more optimized unlike xv6 disk blocks (in memory)
+ *
+ *
+ *  This is a lagecy block struct for representing the
+ *  block in memory (We use page cache now - may be this
+ *  struct data can point to the page cache itself)
+ *
+ *  struct bio is used for the io in device driver layer.
+ *  which is based on scatter-gather I/O, for better 
+ *  performance and to avoid copy. (like vector io)
+ *
+ *  Linux introduced in erlier version of the linux kernel
+ *  which was very simple algorithm during that time, and 
+ *  now it has been improved.
  */
+
+
 /*
  * Historically, a buffer_head was used to map a single block
  * within a page, and of course as the unit of I/O through the
