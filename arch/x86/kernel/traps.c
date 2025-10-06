@@ -329,6 +329,16 @@ __visible void __noreturn handle_stack_overflow(struct pt_regs *regs,
 }
 #endif
 
+
+
+  /*
+   * XXX:
+   *  Double page faoult handler,
+   *  When page fault happens and page fault handler kernel page is swapped out.
+   *
+   *  no triple fault, it will crash!!!!
+   */
+
 /*
  * Runs on an IST stack for x86_64 and on a special task stack for x86_32.
  *
