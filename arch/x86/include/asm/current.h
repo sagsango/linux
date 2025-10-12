@@ -42,6 +42,24 @@ static __always_inline struct task_struct *get_current(void)
 	return this_cpu_read_stable(pcpu_hot.current_task);
 }
 
+/*
+ *
+ * XXX:
+ *  current gives you the task_struct of the process which is
+ *  in kernel context during some systems call.
+ *
+ *  But current can not be used in interrupt context.
+ *  Because the current is dependednt on the value of the registers
+ *  There were amny implementation:
+ *      current will be resent on the bottom of the kernel stack -(rsp & rpb)
+ *      current will be presnet on the cpu local GS resister.
+ *
+ *  So when the process switch from the systems call context to the interrupt
+ *  context it will save its context first, and restore when interrup is done.
+ *
+ *  Every minor version of the kernel have diff implementation
+ *
+ */
 #define current get_current()
 
 #endif /* __ASSEMBLY__ */
