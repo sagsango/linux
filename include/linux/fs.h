@@ -773,6 +773,20 @@ struct inode {
 		unsigned		i_dir_seq;
 	};
 
+    /*
+     * XXX:
+     *  incremented when inode is reused
+     *  so that we can check if file is new or old
+     *  with same inode and same name.
+     *
+     *  if a file with name file.txt get deleted
+     *  and then again file file.txt created,
+     *  And how we detect
+     *      may be new file.txt got diff inode
+     *          -> We are clear that file is new
+     *      may be new file.txt got same inode
+     *          -> Here we will use generation number
+     */
 	__u32			i_generation;
 
 #ifdef CONFIG_FSNOTIFY
