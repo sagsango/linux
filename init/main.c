@@ -1287,6 +1287,14 @@ static void __init do_initcall_level(int level, char *command_line)
 {
 	initcall_entry_t *fn;
 
+
+	printk(KERN_INFO "\n");
+	printk(KERN_INFO "========================================\n");
+	printk(KERN_INFO "INITCALL LEVEL %d: %s\n",
+	       level, initcall_level_names[level]);
+	printk(KERN_INFO "========================================\n");
+
+
 	parse_args(initcall_level_names[level],
 		   command_line, __start___param,
 		   __stop___param - __start___param,
@@ -1294,8 +1302,16 @@ static void __init do_initcall_level(int level, char *command_line)
 		   NULL, ignore_unknown_bootoption);
 
 	trace_initcall_level(initcall_level_names[level]);
-	for (fn = initcall_levels[level]; fn < initcall_levels[level+1]; fn++)
+	for (fn = initcall_levels[level]; fn < initcall_levels[level+1]; fn++) {
+		initcall_t call = initcall_from_entry(fn);
+
+		printk(KERN_INFO "initcall: level=%d name=%s addr=%p\n",
+		       level,
+		       initcall_level_names[level],
+		       call);
+
 		do_one_initcall(initcall_from_entry(fn));
+	}
 }
 
 static void __init do_initcalls(void)
@@ -1330,6 +1346,63 @@ static void __init do_basic_setup(void)
 	driver_init();
 	init_irq_proc();
 	do_ctors();
+	/* XXX: This is going to do all the driver and modules initialization
+	 *	TODO: Work on do_initcall_level function to write better debug
+	 *	messages.
+	 *
+	 *
+	 *
+Level 0  pure
+    |
+    v
+Basic helper infrastructure
+    |
+    v
+Level 1  core
+    |
+    v
+Core kernel services
+    |
+    v
+Level 2  postcore
+    |
+    v
+Driver model support
+    |
+    v
+Level 3  arch
+    |
+    v
+CPU / Architecture initialization
+    |
+    v
+Level 4  subsys
+    |
+    v
+PCI / USB / Networking / Block Core
+    |
+    v
+Level 5  fs
+    |
+    v
+ext2 ext4 proc sysfs tmpfs
+    |
+    v
+Level 6  device
+    |
+    v
+NIC Driver
+Audio Driver
+USB Driver
+PCI Driver
+GPU Driver
+    |
+    v
+Level 7  late
+    |
+    v
+Everything else
+	*/
 	do_initcalls();
 }
 
