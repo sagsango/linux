@@ -14,6 +14,7 @@
 #include <linux/interrupt.h>
 #include <linux/kernel_stat.h>
 #include <linux/irqdomain.h>
+#include <linux/kallsyms.h>
 
 #include <trace/events/irq.h>
 
@@ -985,6 +986,19 @@ static void
 __irq_do_set_handler(struct irq_desc *desc, irq_flow_handler_t handle,
 		     int is_chained, const char *name)
 {
+	char handler_name[KSYM_NAME_LEN];
+	unsigned int irq = desc->irq_data.irq;
+
+	if (handle) {
+		sprint_symbol_no_offset(handler_name, (unsigned long)handle);
+	} else {
+		strcpy(handler_name, "handle_bad_irq");
+	}
+
+	printk(KERN_INFO "SAGAR IRQ setup: irq=%u handler=%s chained=%d name=%s chip=%s\n",
+	       irq, handler_name, is_chained, name ? name : "NULL",
+	       desc->irq_data.chip ? desc->irq_data.chip->name : "NULL");
+
 	if (!handle) {
 		handle = handle_bad_irq;
 	} else {
