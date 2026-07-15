@@ -788,6 +788,9 @@ void __init __weak pgtable_cache_init(void) { }
 
 void __init __weak trap_init(void) { }
 
+/*XXX: We can enable the initcall by passing the "initcall_debug"
+       in the command line
+*/
 bool initcall_debug;
 core_param(initcall_debug, initcall_debug, bool, 0644);
 
