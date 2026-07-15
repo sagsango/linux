@@ -3,6 +3,7 @@
  * Interrupt descriptor table related code
  */
 #include <linux/interrupt.h>
+#include <linux/kallsyms.h>
 
 #include <asm/cpu_entry_area.h>
 #include <asm/set_memory.h>
@@ -191,12 +192,18 @@ static __init void
 idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sys)
 {
 	gate_desc desc;
+	char handler_name[KSYM_NAME_LEN];
 
 	for (; size > 0; t++, size--) {
 		idt_init_desc(&desc, t);
 		write_idt_entry(idt, t->vector, &desc);
 		if (sys)
 			set_bit(t->vector, system_vectors);
+		
+		if (t->addr) {
+			sprint_symbol_no_offset(handler_name, (unsigned long)t->addr);
+			printk(KERN_INFO "SAGAR IDT[%3u]: %s\n", t->vector, handler_name);
+		}
 	}
 }
 

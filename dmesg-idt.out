@@ -1,0 +1,278 @@
+[    0.000000] SAGAR IDT[  0]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  1]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  2]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  3]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  4]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  5]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  6]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  7]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  8]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  9]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 10]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 11]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 12]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 13]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 14]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 15]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 16]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 17]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 18]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 19]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 20]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 21]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 22]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 23]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 24]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 25]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 26]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 27]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 28]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 29]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 30]: early_idt_handler_array
+[    0.000000] SAGAR IDT[ 31]: early_idt_handler_array
+[    0.000000] SAGAR IDT[  1]: asm_exc_debug
+[    0.000000] SAGAR IDT[  3]: asm_exc_int3
+[    0.035619] SAGAR IDT[ 14]: asm_exc_page_fault
+[    0.091886] SAGAR IDT[  0]: asm_exc_divide_error
+[    0.091909] SAGAR IDT[  2]: asm_exc_nmi
+[    0.091917] SAGAR IDT[  5]: asm_exc_bounds
+[    0.091924] SAGAR IDT[  6]: asm_exc_invalid_op
+[    0.091930] SAGAR IDT[  7]: asm_exc_device_not_available
+[    0.091937] SAGAR IDT[  9]: asm_exc_coproc_segment_overrun
+[    0.091943] SAGAR IDT[ 10]: asm_exc_invalid_tss
+[    0.091950] SAGAR IDT[ 11]: asm_exc_segment_not_present
+[    0.091956] SAGAR IDT[ 12]: asm_exc_stack_segment
+[    0.091963] SAGAR IDT[ 13]: asm_exc_general_protection
+[    0.091969] SAGAR IDT[ 15]: asm_exc_spurious_interrupt_bug
+[    0.091975] SAGAR IDT[ 16]: asm_exc_coprocessor_error
+[    0.091982] SAGAR IDT[ 17]: asm_exc_alignment_check
+[    0.091988] SAGAR IDT[ 19]: asm_exc_simd_coprocessor_error
+[    0.091993] SAGAR IDT[  8]: asm_exc_double_fault
+[    0.091999] SAGAR IDT[  1]: asm_exc_debug
+[    0.092005] SAGAR IDT[ 18]: asm_exc_machine_check
+[    0.092010] SAGAR IDT[ 21]: asm_exc_control_protection
+[    0.092016] SAGAR IDT[  4]: asm_exc_overflow
+[    0.092034] SAGAR IDT[128]: asm_int80_emulation
+[    0.146581] SAGAR IDT[253]: asm_sysvec_reschedule_ipi
+[    0.146588] SAGAR IDT[252]: asm_sysvec_call_function
+[    0.146593] SAGAR IDT[251]: asm_sysvec_call_function_single
+[    0.146598] SAGAR IDT[248]: asm_sysvec_reboot
+[    0.146610] SAGAR IDT[250]: asm_sysvec_thermal
+[    0.146615] SAGAR IDT[249]: asm_sysvec_threshold
+[    0.146620] SAGAR IDT[244]: asm_sysvec_deferred_error
+[    0.146624] SAGAR IDT[236]: asm_sysvec_apic_timer_interrupt
+[    0.146629] SAGAR IDT[247]: asm_sysvec_x86_platform_ipi
+[    0.146634] SAGAR IDT[242]: asm_sysvec_kvm_posted_intr_ipi
+[    0.146639] SAGAR IDT[241]: asm_sysvec_kvm_posted_intr_wakeup_ipi
+[    0.146644] SAGAR IDT[240]: asm_sysvec_kvm_posted_intr_nested_ipi
+[    0.146649] SAGAR IDT[246]: asm_sysvec_irq_work
+[    0.146654] SAGAR IDT[255]: asm_sysvec_spurious_apic_interrupt
+[    0.146659] SAGAR IDT[254]: asm_sysvec_error_interrupt
+[    0.146728] SAGAR IDT[ 32]: irq_entries_start
+[    0.146746] SAGAR IDT[ 33]: irq_entries_start
+[    0.146753] SAGAR IDT[ 34]: irq_entries_start
+[    0.146760] SAGAR IDT[ 35]: irq_entries_start
+[    0.146766] SAGAR IDT[ 36]: irq_entries_start
+[    0.146772] SAGAR IDT[ 37]: irq_entries_start
+[    0.146778] SAGAR IDT[ 38]: irq_entries_start
+[    0.146784] SAGAR IDT[ 39]: irq_entries_start
+[    0.146790] SAGAR IDT[ 40]: irq_entries_start
+[    0.146796] SAGAR IDT[ 41]: irq_entries_start
+[    0.146802] SAGAR IDT[ 42]: irq_entries_start
+[    0.146808] SAGAR IDT[ 43]: irq_entries_start
+[    0.146814] SAGAR IDT[ 44]: irq_entries_start
+[    0.146820] SAGAR IDT[ 45]: irq_entries_start
+[    0.146826] SAGAR IDT[ 46]: irq_entries_start
+[    0.146832] SAGAR IDT[ 47]: irq_entries_start
+[    0.146838] SAGAR IDT[ 48]: irq_entries_start
+[    0.146844] SAGAR IDT[ 49]: irq_entries_start
+[    0.146850] SAGAR IDT[ 50]: irq_entries_start
+[    0.146856] SAGAR IDT[ 51]: irq_entries_start
+[    0.146862] SAGAR IDT[ 52]: irq_entries_start
+[    0.146868] SAGAR IDT[ 53]: irq_entries_start
+[    0.146874] SAGAR IDT[ 54]: irq_entries_start
+[    0.146880] SAGAR IDT[ 55]: irq_entries_start
+[    0.146886] SAGAR IDT[ 56]: irq_entries_start
+[    0.146892] SAGAR IDT[ 57]: irq_entries_start
+[    0.146898] SAGAR IDT[ 58]: irq_entries_start
+[    0.146904] SAGAR IDT[ 59]: irq_entries_start
+[    0.146910] SAGAR IDT[ 60]: irq_entries_start
+[    0.146916] SAGAR IDT[ 61]: irq_entries_start
+[    0.146922] SAGAR IDT[ 62]: irq_entries_start
+[    0.146928] SAGAR IDT[ 63]: irq_entries_start
+[    0.146934] SAGAR IDT[ 64]: irq_entries_start
+[    0.146940] SAGAR IDT[ 65]: irq_entries_start
+[    0.146946] SAGAR IDT[ 66]: irq_entries_start
+[    0.146952] SAGAR IDT[ 67]: irq_entries_start
+[    0.146958] SAGAR IDT[ 68]: irq_entries_start
+[    0.146964] SAGAR IDT[ 69]: irq_entries_start
+[    0.146970] SAGAR IDT[ 70]: irq_entries_start
+[    0.146976] SAGAR IDT[ 71]: irq_entries_start
+[    0.146982] SAGAR IDT[ 72]: irq_entries_start
+[    0.146988] SAGAR IDT[ 73]: irq_entries_start
+[    0.146994] SAGAR IDT[ 74]: irq_entries_start
+[    0.147000] SAGAR IDT[ 75]: irq_entries_start
+[    0.147006] SAGAR IDT[ 76]: irq_entries_start
+[    0.147012] SAGAR IDT[ 77]: irq_entries_start
+[    0.147018] SAGAR IDT[ 78]: irq_entries_start
+[    0.147024] SAGAR IDT[ 79]: irq_entries_start
+[    0.147031] SAGAR IDT[ 80]: irq_entries_start
+[    0.147036] SAGAR IDT[ 81]: irq_entries_start
+[    0.147042] SAGAR IDT[ 82]: irq_entries_start
+[    0.147049] SAGAR IDT[ 83]: irq_entries_start
+[    0.147055] SAGAR IDT[ 84]: irq_entries_start
+[    0.147060] SAGAR IDT[ 85]: irq_entries_start
+[    0.147066] SAGAR IDT[ 86]: irq_entries_start
+[    0.147073] SAGAR IDT[ 87]: irq_entries_start
+[    0.147078] SAGAR IDT[ 88]: irq_entries_start
+[    0.147084] SAGAR IDT[ 89]: irq_entries_start
+[    0.147090] SAGAR IDT[ 90]: irq_entries_start
+[    0.147097] SAGAR IDT[ 91]: irq_entries_start
+[    0.147102] SAGAR IDT[ 92]: irq_entries_start
+[    0.147108] SAGAR IDT[ 93]: irq_entries_start
+[    0.147115] SAGAR IDT[ 94]: irq_entries_start
+[    0.147121] SAGAR IDT[ 95]: irq_entries_start
+[    0.147127] SAGAR IDT[ 96]: irq_entries_start
+[    0.147133] SAGAR IDT[ 97]: irq_entries_start
+[    0.147139] SAGAR IDT[ 98]: irq_entries_start
+[    0.147145] SAGAR IDT[ 99]: irq_entries_start
+[    0.147151] SAGAR IDT[100]: irq_entries_start
+[    0.147157] SAGAR IDT[101]: irq_entries_start
+[    0.147164] SAGAR IDT[102]: irq_entries_start
+[    0.147170] SAGAR IDT[103]: irq_entries_start
+[    0.147176] SAGAR IDT[104]: irq_entries_start
+[    0.147182] SAGAR IDT[105]: irq_entries_start
+[    0.147188] SAGAR IDT[106]: irq_entries_start
+[    0.147194] SAGAR IDT[107]: irq_entries_start
+[    0.147200] SAGAR IDT[108]: irq_entries_start
+[    0.147206] SAGAR IDT[109]: irq_entries_start
+[    0.147212] SAGAR IDT[110]: irq_entries_start
+[    0.147217] SAGAR IDT[111]: irq_entries_start
+[    0.147223] SAGAR IDT[112]: irq_entries_start
+[    0.147230] SAGAR IDT[113]: irq_entries_start
+[    0.147235] SAGAR IDT[114]: irq_entries_start
+[    0.147241] SAGAR IDT[115]: irq_entries_start
+[    0.147247] SAGAR IDT[116]: irq_entries_start
+[    0.147253] SAGAR IDT[117]: irq_entries_start
+[    0.147259] SAGAR IDT[118]: irq_entries_start
+[    0.147265] SAGAR IDT[119]: irq_entries_start
+[    0.147271] SAGAR IDT[120]: irq_entries_start
+[    0.147277] SAGAR IDT[121]: irq_entries_start
+[    0.147283] SAGAR IDT[122]: irq_entries_start
+[    0.147289] SAGAR IDT[123]: irq_entries_start
+[    0.147300] SAGAR IDT[124]: irq_entries_start
+[    0.147306] SAGAR IDT[125]: irq_entries_start
+[    0.147312] SAGAR IDT[126]: irq_entries_start
+[    0.147318] SAGAR IDT[127]: irq_entries_start
+[    0.147324] SAGAR IDT[129]: irq_entries_start
+[    0.147330] SAGAR IDT[130]: irq_entries_start
+[    0.147336] SAGAR IDT[131]: irq_entries_start
+[    0.147342] SAGAR IDT[132]: irq_entries_start
+[    0.147348] SAGAR IDT[133]: irq_entries_start
+[    0.147354] SAGAR IDT[134]: irq_entries_start
+[    0.147360] SAGAR IDT[135]: irq_entries_start
+[    0.147366] SAGAR IDT[136]: irq_entries_start
+[    0.147372] SAGAR IDT[137]: irq_entries_start
+[    0.147378] SAGAR IDT[138]: irq_entries_start
+[    0.147384] SAGAR IDT[139]: irq_entries_start
+[    0.147390] SAGAR IDT[140]: irq_entries_start
+[    0.147396] SAGAR IDT[141]: irq_entries_start
+[    0.147402] SAGAR IDT[142]: irq_entries_start
+[    0.147408] SAGAR IDT[143]: irq_entries_start
+[    0.147414] SAGAR IDT[144]: irq_entries_start
+[    0.147421] SAGAR IDT[145]: irq_entries_start
+[    0.147427] SAGAR IDT[146]: irq_entries_start
+[    0.147433] SAGAR IDT[147]: irq_entries_start
+[    0.147439] SAGAR IDT[148]: irq_entries_start
+[    0.147445] SAGAR IDT[149]: irq_entries_start
+[    0.147451] SAGAR IDT[150]: irq_entries_start
+[    0.147457] SAGAR IDT[151]: irq_entries_start
+[    0.147463] SAGAR IDT[152]: irq_entries_start
+[    0.147469] SAGAR IDT[153]: irq_entries_start
+[    0.147475] SAGAR IDT[154]: irq_entries_start
+[    0.147481] SAGAR IDT[155]: irq_entries_start
+[    0.147487] SAGAR IDT[156]: irq_entries_start
+[    0.147494] SAGAR IDT[157]: irq_entries_start
+[    0.147500] SAGAR IDT[158]: irq_entries_start
+[    0.147505] SAGAR IDT[159]: irq_entries_start
+[    0.147512] SAGAR IDT[160]: irq_entries_start
+[    0.147518] SAGAR IDT[161]: irq_entries_start
+[    0.147524] SAGAR IDT[162]: irq_entries_start
+[    0.147530] SAGAR IDT[163]: irq_entries_start
+[    0.147536] SAGAR IDT[164]: irq_entries_start
+[    0.147542] SAGAR IDT[165]: irq_entries_start
+[    0.147548] SAGAR IDT[166]: irq_entries_start
+[    0.147554] SAGAR IDT[167]: irq_entries_start
+[    0.147560] SAGAR IDT[168]: irq_entries_start
+[    0.147566] SAGAR IDT[169]: irq_entries_start
+[    0.147572] SAGAR IDT[170]: irq_entries_start
+[    0.147578] SAGAR IDT[171]: irq_entries_start
+[    0.147584] SAGAR IDT[172]: irq_entries_start
+[    0.147590] SAGAR IDT[173]: irq_entries_start
+[    0.147596] SAGAR IDT[174]: irq_entries_start
+[    0.147602] SAGAR IDT[175]: irq_entries_start
+[    0.147608] SAGAR IDT[176]: irq_entries_start
+[    0.147614] SAGAR IDT[177]: irq_entries_start
+[    0.147620] SAGAR IDT[178]: irq_entries_start
+[    0.147626] SAGAR IDT[179]: irq_entries_start
+[    0.147632] SAGAR IDT[180]: irq_entries_start
+[    0.147638] SAGAR IDT[181]: irq_entries_start
+[    0.147644] SAGAR IDT[182]: irq_entries_start
+[    0.147650] SAGAR IDT[183]: irq_entries_start
+[    0.147656] SAGAR IDT[184]: irq_entries_start
+[    0.147662] SAGAR IDT[185]: irq_entries_start
+[    0.147668] SAGAR IDT[186]: irq_entries_start
+[    0.147675] SAGAR IDT[187]: irq_entries_start
+[    0.147681] SAGAR IDT[188]: irq_entries_start
+[    0.147687] SAGAR IDT[189]: irq_entries_start
+[    0.147693] SAGAR IDT[190]: irq_entries_start
+[    0.147699] SAGAR IDT[191]: irq_entries_start
+[    0.147705] SAGAR IDT[192]: irq_entries_start
+[    0.147711] SAGAR IDT[193]: irq_entries_start
+[    0.147717] SAGAR IDT[194]: irq_entries_start
+[    0.147723] SAGAR IDT[195]: irq_entries_start
+[    0.147729] SAGAR IDT[196]: irq_entries_start
+[    0.147735] SAGAR IDT[197]: irq_entries_start
+[    0.147741] SAGAR IDT[198]: irq_entries_start
+[    0.147747] SAGAR IDT[199]: irq_entries_start
+[    0.147753] SAGAR IDT[200]: irq_entries_start
+[    0.147759] SAGAR IDT[201]: irq_entries_start
+[    0.147765] SAGAR IDT[202]: irq_entries_start
+[    0.147771] SAGAR IDT[203]: irq_entries_start
+[    0.147777] SAGAR IDT[204]: irq_entries_start
+[    0.147783] SAGAR IDT[205]: irq_entries_start
+[    0.147789] SAGAR IDT[206]: irq_entries_start
+[    0.147795] SAGAR IDT[207]: irq_entries_start
+[    0.147802] SAGAR IDT[208]: irq_entries_start
+[    0.147808] SAGAR IDT[209]: irq_entries_start
+[    0.147814] SAGAR IDT[210]: irq_entries_start
+[    0.147820] SAGAR IDT[211]: irq_entries_start
+[    0.147826] SAGAR IDT[212]: irq_entries_start
+[    0.147832] SAGAR IDT[213]: irq_entries_start
+[    0.147838] SAGAR IDT[214]: irq_entries_start
+[    0.147844] SAGAR IDT[215]: irq_entries_start
+[    0.147850] SAGAR IDT[216]: irq_entries_start
+[    0.147856] SAGAR IDT[217]: irq_entries_start
+[    0.147862] SAGAR IDT[218]: irq_entries_start
+[    0.147868] SAGAR IDT[219]: irq_entries_start
+[    0.147874] SAGAR IDT[220]: irq_entries_start
+[    0.147880] SAGAR IDT[221]: irq_entries_start
+[    0.147886] SAGAR IDT[222]: irq_entries_start
+[    0.147892] SAGAR IDT[223]: irq_entries_start
+[    0.147898] SAGAR IDT[224]: irq_entries_start
+[    0.147904] SAGAR IDT[225]: irq_entries_start
+[    0.147910] SAGAR IDT[226]: irq_entries_start
+[    0.147916] SAGAR IDT[227]: irq_entries_start
+[    0.147922] SAGAR IDT[228]: irq_entries_start
+[    0.147928] SAGAR IDT[229]: irq_entries_start
+[    0.147934] SAGAR IDT[230]: irq_entries_start
+[    0.147940] SAGAR IDT[231]: irq_entries_start
+[    0.147946] SAGAR IDT[232]: irq_entries_start
+[    0.147952] SAGAR IDT[233]: irq_entries_start
+[    0.147958] SAGAR IDT[234]: irq_entries_start
+[    0.147964] SAGAR IDT[235]: irq_entries_start
+[    0.147994] SAGAR IDT[237]: spurious_entries_start
+[    0.148007] SAGAR IDT[238]: spurious_entries_start
+[    0.148014] SAGAR IDT[239]: spurious_entries_start
+[    0.148020] SAGAR IDT[243]: spurious_entries_start
+[    0.148026] SAGAR IDT[245]: spurious_entries_start
