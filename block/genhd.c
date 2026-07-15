@@ -883,6 +883,7 @@ static const struct seq_operations partitions_op = {
 };
 #endif
 
+/* XXX: Register the block layer */
 static int __init genhd_device_init(void)
 {
 	int error;
