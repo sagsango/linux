@@ -77,6 +77,12 @@ struct ipc_proc_iface {
 	int (*show)(struct seq_file *, void *);
 };
 
+/* XXX: ipc_init will be inited in the 6th step
+	and it will init the following ipc subsystems:
+		- sem
+		- msg
+		- shm
+*/
 /**
  * ipc_init - initialise ipc subsystem
  *

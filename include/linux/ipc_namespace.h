@@ -28,6 +28,12 @@ struct ipc_ids {
 	struct rhashtable key_ht;
 };
 
+/* XXX: We see the sem_init also  inits the
+	ipc_namespace;
+
+	Main reason for namespace in the kernel
+	is containers
+*/
 struct ipc_namespace {
 	struct ipc_ids	ids[3];
 
