@@ -13,6 +13,7 @@
 #include <linux/module.h>
 #include <linux/random.h>
 #include <linux/interrupt.h>
+#include <linux/kallsyms.h>
 #include <linux/irqdomain.h>
 #include <linux/slab.h>
 #include <linux/sched.h>
@@ -1798,6 +1799,17 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 	}
 
 	*old_ptr = new;
+
+	/* Log device handler registration */
+	if (new->handler) {
+		char handler_name[KSYM_NAME_LEN];
+		const char *dev_name = new->name ? new->name : "NULL";
+		const char *shared = (new->flags & IRQF_SHARED) ? ":shared" : "";
+		
+		sprint_symbol_no_offset(handler_name, (unsigned long)new->handler);
+		printk(KERN_INFO "SAGAR IRQ device: irq=%u handler=%s device=%s%s\n",
+		       irq, handler_name, dev_name, shared);
+	}
 
 	irq_pm_install_action(desc, new);
 
