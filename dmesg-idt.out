@@ -276,3 +276,56 @@
 [    0.148014] SAGAR IDT[239]: spurious_entries_start
 [    0.148020] SAGAR IDT[243]: spurious_entries_start
 [    0.148026] SAGAR IDT[245]: spurious_entries_start
+
+
+
+
+
+ubuntu@ubuntu-lkp:~$ dmesg | grep -i "SAGAR IRQ setup"
+[    0.143428] SAGAR IRQ setup: irq=0 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC
+[    0.143615] SAGAR IRQ setup: irq=1 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143627] SAGAR IRQ setup: irq=2 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          [
+[    0.143637] SAGAR IRQ setup: irq=3 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143646] SAGAR IRQ setup: irq=4 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143655] SAGAR IRQ setup: irq=5 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143664] SAGAR IRQ setup: irq=6 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143672] SAGAR IRQ setup: irq=7 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143681] SAGAR IRQ setup: irq=8 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143689] SAGAR IRQ setup: irq=9 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                          
+[    0.143697] SAGAR IRQ setup: irq=10 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                         
+[    0.143706] SAGAR IRQ setup: irq=11 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                         
+[    0.143715] SAGAR IRQ setup: irq=12 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                         
+[    0.143724] SAGAR IRQ setup: irq=13 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                         
+[    0.143732] SAGAR IRQ setup: irq=14 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                         
+[    0.143741] SAGAR IRQ setup: irq=15 handler=handle_level_irq chained=0 name=NULL chip=XT-PIC                                                                         
+[    0.226509] SAGAR IRQ setup: irq=1 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.227205] SAGAR IRQ setup: irq=0 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.227468] SAGAR IRQ setup: irq=3 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.227716] SAGAR IRQ setup: irq=4 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.228009] SAGAR IRQ setup: irq=5 handler=handle_fasteoi_irq chained=0 name=fasteoi chip=IO-APIC                                                                    
+[    0.228277] SAGAR IRQ setup: irq=6 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.228540] SAGAR IRQ setup: irq=7 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.228758] SAGAR IRQ setup: irq=8 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                          
+[    0.229066] SAGAR IRQ setup: irq=9 handler=handle_fasteoi_irq chained=0 name=fasteoi chip=IO-APIC                                                                    
+[    0.229347] SAGAR IRQ setup: irq=10 handler=handle_fasteoi_irq chained=0 name=fasteoi chip=IO-APIC                                                                   
+[    0.229604] SAGAR IRQ setup: irq=11 handler=handle_fasteoi_irq chained=0 name=fasteoi chip=IO-APIC                                                                   
+[    0.229874] SAGAR IRQ setup: irq=12 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                         
+[    0.230154] SAGAR IRQ setup: irq=13 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                         
+[    0.230418] SAGAR IRQ setup: irq=14 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                         
+[    0.230663] SAGAR IRQ setup: irq=15 handler=handle_edge_irq chained=0 name=edge chip=IO-APIC                                                                         
+ubuntu@ubuntu-lkp:~$ dmesg | grep -i "SAGAR IRQ device"                                                                                                                 [
+[    0.218644] SAGAR IRQ device: irq=0 handler=timer_interrupt device=timer
+[    0.817364] SAGAR IRQ device: irq=9 handler=irq_default_primary_handler device=acpi:shared
+[    1.558854] SAGAR IRQ device: irq=14 handler=ata_bmdma_interrupt device=ata_piix:shared
+[    1.559328] SAGAR IRQ device: irq=15 handler=ata_bmdma_interrupt device=ata_piix:shared                                                                              [
+[    2.190852] SAGAR IRQ device: irq=12 handler=i8042_aux_test_irq device=i8042:shared                                                                                  
+[    2.193503] SAGAR IRQ device: irq=12 handler=i8042_interrupt device=i8042:shared                                                                                     
+[    2.194001] SAGAR IRQ device: irq=1 handler=i8042_interrupt device=i8042:shared                                                                                      
+[    2.207394] SAGAR IRQ device: irq=8 handler=hpet_rtc_interrupt device=rtc0                                                                                           
+[    2.415304] SAGAR IRQ device: irq=4 handler=serial8250_interrupt device=ttyS0
+[   17.146113] SAGAR IRQ device: irq=11 handler=e1000_intr device=ens3:shared
+ubuntu@ubuntu-lkp:~$ dmesg | grep "SAGAR" | grep "traps\|gates"                                                                                                         [
+[    0.000000] SAGAR IDT: early_traps setup complete (2 entries)
+[    0.090187] SAGAR IDT: default_traps setup complete (19 entries)                                                                                                     [
+[    0.143858] SAGAR IDT: apic_gates setup complete (15 entries)                                                                                                        
+ubuntu@ubuntu-lkp:~$  
