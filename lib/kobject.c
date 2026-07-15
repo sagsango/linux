@@ -795,6 +795,9 @@ struct kobject *kobject_create_and_add(const char *name, struct kobject *parent)
 	if (!kobj)
 		return NULL;
 
+	pr_info("SAGAR Kobject created /%s/%s\n", parent && parent->name ? 
+						parent->name : 
+						"NULL", name);
 	retval = kobject_add(kobj, parent, "%s", name);
 	if (retval) {
 		pr_warn("%s: kobject_add error: %d\n", __func__, retval);
@@ -1005,6 +1008,11 @@ struct kset *kset_create_and_add(const char *name,
 	struct kset *kset;
 	int error;
 
+	/* XXX: Although it does not make much sence for now, we will keep it */
+	pr_info("SAGAR KSet created /%s/%s\n",parent_kobj && parent_kobj->name ?
+					      parent_kobj->name :
+					      "NULL", name);
+	
 	kset = kset_create(name, uevent_ops, parent_kobj);
 	if (!kset)
 		return NULL;
