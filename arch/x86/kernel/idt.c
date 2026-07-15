@@ -202,7 +202,7 @@ idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sy
 		
 		if (t->addr) {
 			sprint_symbol_no_offset(handler_name, (unsigned long)t->addr);
-			printk(KERN_INFO "SAGAR IDT[%3u]: %s\n", t->vector, handler_name);
+			pr_info("SAGAR IDT[%3u]: %s\n", t->vector, handler_name);
 		}
 	}
 }
@@ -228,6 +228,8 @@ void __init idt_setup_early_traps(void)
 	idt_setup_from_table(idt_table, early_idts, ARRAY_SIZE(early_idts),
 			     true);
 	load_idt(&idt_descr);
+	pr_info("SAGAR IDT: early_traps setup complete (%lu entries)\n",
+		ARRAY_SIZE(early_idts));
 }
 
 /**
@@ -239,6 +241,9 @@ void __init idt_setup_traps(void)
 
 	if (ia32_enabled())
 		idt_setup_from_table(idt_table, ia32_idt, ARRAY_SIZE(ia32_idt), true);
+	
+	pr_info("SAGAR IDT: default_traps setup complete (%lu entries)\n",
+		ARRAY_SIZE(def_idts));
 }
 
 #ifdef CONFIG_X86_64
@@ -291,6 +296,8 @@ void __init idt_setup_apic_and_irq_gates(void)
 	void *entry;
 
 	idt_setup_from_table(idt_table, apic_idts, ARRAY_SIZE(apic_idts), true);
+	pr_info("SAGAR IDT: apic_gates setup complete (%lu entries)\n",
+		ARRAY_SIZE(apic_idts));
 
 	for_each_clear_bit_from(i, system_vectors, FIRST_SYSTEM_VECTOR) {
 		entry = irq_entries_start + IDT_ALIGN * (i - FIRST_EXTERNAL_VECTOR);
