@@ -1304,11 +1304,12 @@ static void __init do_initcall_level(int level, char *command_line)
 	trace_initcall_level(initcall_level_names[level]);
 	for (fn = initcall_levels[level]; fn < initcall_levels[level+1]; fn++) {
 		initcall_t call = initcall_from_entry(fn);
+		char sym_name[KSYM_NAME_LEN];
 
-		printk(KERN_INFO "initcall: level=%d name=%s addr=%p\n",
+		sprint_symbol(sym_name, (unsigned long)call);
+		printk(KERN_INFO "initcall: level=%d name=%s\n",
 		       level,
-		       initcall_level_names[level],
-		       call);
+		       sym_name);
 
 		do_one_initcall(initcall_from_entry(fn));
 	}
