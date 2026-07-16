@@ -316,6 +316,7 @@ static inline void kernel_param_unlock(struct module *mod)
 }
 #endif
 
+/* XXX: Module param related APIs */
 #ifndef MODULE
 /**
  * core_param - define a historical core kernel parameter.
