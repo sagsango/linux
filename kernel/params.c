@@ -1,3 +1,4 @@
+/* XXX: Module and boot params */
 // SPDX-License-Identifier: GPL-2.0-or-later
 /*
  * Helpers for initial module or kernel cmdline parsing
