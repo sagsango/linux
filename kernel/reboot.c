@@ -13,6 +13,8 @@
 #include <linux/kexec.h>
 #include <linux/kmod.h>
 #include <linux/kmsg_dump.h>
+#include <linux/kallsyms.h>
+#include <linux/rcupdate.h>
 #include <linux/reboot.h>
 #include <linux/suspend.h>
 #include <linux/syscalls.h>
@@ -160,6 +162,9 @@ EXPORT_SYMBOL(devm_register_reboot_notifier);
  */
 static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
 
+static int sys_off_notify(struct notifier_block *nb,
+			  unsigned long mode, void *cmd);
+
 /**
  *	register_restart_handler - Register function to be called to reset
  *				   the system
@@ -232,6 +237,33 @@ EXPORT_SYMBOL(unregister_restart_handler);
  */
 void do_kernel_restart(char *cmd)
 {
+	struct notifier_block *nb;
+	bool found = false;
+
+	pr_emerg("restart_handler_list invoke\n");
+
+	rcu_read_lock();
+	for (nb = rcu_dereference_raw(restart_handler_list.head);
+	     nb;
+	     nb = rcu_dereference_raw(nb->next)) {
+		found = true;
+		if (nb->notifier_call == sys_off_notify) {
+			struct sys_off_handler *handler;
+			char sym_name[KSYM_SYMBOL_LEN];
+
+			handler = container_of(nb, struct sys_off_handler, nb);
+			sprint_symbol(sym_name, (unsigned long)handler->sys_off_cb);
+			pr_emerg("restart_handler_list call: priority=%d notifier=%ps sys_off_cb=%s\n",
+				 nb->priority, nb->notifier_call, sym_name);
+		} else {
+			pr_emerg("restart_handler_list call: priority=%d notifier=%ps\n",
+				 nb->priority, nb->notifier_call);
+		}
+	}
+	if (!found)
+		pr_emerg("restart_handler_list invoke: no handlers\n");
+	rcu_read_unlock();
+
 	atomic_notifier_call_chain(&restart_handler_list, reboot_mode, cmd);
 }
 
@@ -261,6 +293,33 @@ static BLOCKING_NOTIFIER_HEAD(restart_prep_handler_list);
 
 static void do_kernel_restart_prepare(void)
 {
+	struct notifier_block *nb;
+	bool found = false;
+
+	pr_emerg("restart_prep_handler_list invoke\n");
+
+	down_read(&restart_prep_handler_list.rwsem);
+	for (nb = rcu_dereference_raw(restart_prep_handler_list.head);
+	     nb;
+	     nb = rcu_dereference_raw(nb->next)) {
+		found = true;
+		if (nb->notifier_call == sys_off_notify) {
+			struct sys_off_handler *handler;
+			char sym_name[KSYM_SYMBOL_LEN];
+
+			handler = container_of(nb, struct sys_off_handler, nb);
+			sprint_symbol(sym_name, (unsigned long)handler->sys_off_cb);
+			pr_emerg("restart_prep_handler_list call: priority=%d notifier=%ps sys_off_cb=%s\n",
+				 nb->priority, nb->notifier_call, sym_name);
+		} else {
+			pr_emerg("restart_prep_handler_list call: priority=%d notifier=%ps\n",
+				 nb->priority, nb->notifier_call);
+		}
+	}
+	if (!found)
+		pr_emerg("restart_prep_handler_list invoke: no handlers\n");
+	up_read(&restart_prep_handler_list.rwsem);
+
 	blocking_notifier_call_chain(&restart_prep_handler_list, 0, NULL);
 }
 
@@ -332,8 +391,32 @@ static int sys_off_notify(struct notifier_block *nb,
 {
 	struct sys_off_handler *handler;
 	struct sys_off_data data = {};
+	char sym_name[KSYM_SYMBOL_LEN];
+	const char *list_name = "unknown";
 
 	handler = container_of(nb, struct sys_off_handler, nb);
+	switch (handler->mode) {
+	case SYS_OFF_MODE_POWER_OFF_PREPARE:
+		list_name = "power_off_prep_handler_list";
+		break;
+	case SYS_OFF_MODE_POWER_OFF:
+		list_name = "power_off_handler_list";
+		break;
+	case SYS_OFF_MODE_RESTART_PREPARE:
+		list_name = "restart_prep_handler_list";
+		break;
+	case SYS_OFF_MODE_RESTART:
+		list_name = "restart_handler_list";
+		break;
+	default:
+		break;
+	}
+	sprint_symbol(sym_name, (unsigned long)handler->sys_off_cb);
+	pr_emerg("sys_off call: mode=%lu list=%s blocking=%d priority=%d cb=%s cb_data=%px list_ptr=%px dev=%s\n",
+		mode, list_name,
+		handler->blocking, handler->nb.priority, sym_name,
+		handler->cb_data, handler->list,
+		handler->dev ? dev_name(handler->dev) : "(null)");
 	data.cb_data = handler->cb_data;
 	data.mode = mode;
 	data.cmd = cmd;
@@ -379,6 +462,11 @@ static void free_sys_off_handler(struct sys_off_handler *handler)
 		kfree(handler);
 }
 
+/* XXX: Registering sys_off_handlers, mean handler which needs to be
+	executed during the poweroff.
+	(similar to initcalls which executes during the poweron)
+
+*/
 /**
  *	register_sys_off_handler - Register sys-off handler
  *	@mode: Sys-off mode
@@ -408,6 +496,7 @@ register_sys_off_handler(enum sys_off_mode mode,
 {
 	struct sys_off_handler *handler;
 	int err;
+	const char *list_name = "unknown";
 
 	handler = alloc_sys_off_handler(priority);
 	if (IS_ERR(handler))
@@ -415,21 +504,29 @@ register_sys_off_handler(enum sys_off_mode mode,
 
 	switch (mode) {
 	case SYS_OFF_MODE_POWER_OFF_PREPARE:
+		/* XXX: 1 = &power_off_prep_handler_list */
 		handler->list = &power_off_prep_handler_list;
 		handler->blocking = true;
+		list_name = "power_off_prep_handler_list";
 		break;
 
 	case SYS_OFF_MODE_POWER_OFF:
+		/* XXX: 2 = &power_off_handler_list */
 		handler->list = &power_off_handler_list;
+		list_name = "power_off_handler_list";
 		break;
 
 	case SYS_OFF_MODE_RESTART_PREPARE:
+		/* XXX: 3 = &restart_prep_handler_list; */
 		handler->list = &restart_prep_handler_list;
 		handler->blocking = true;
+		list_name = "restart_prep_handler_list";
 		break;
 
 	case SYS_OFF_MODE_RESTART:
+		/* XXX: 4 = &restart_handler_list; */
 		handler->list = &restart_handler_list;
+		list_name = "restart_handler_list";
 		break;
 
 	default:
@@ -463,6 +560,10 @@ register_sys_off_handler(enum sys_off_mode mode,
 		free_sys_off_handler(handler);
 		return ERR_PTR(err);
 	}
+
+	pr_emerg("sys_off register: mode=%u list=%s blocking=%d priority=%d cb=%ps cb_data=%px\n",
+		 mode, list_name, handler->blocking, handler->nb.priority,
+		 handler->sys_off_cb, handler->cb_data);
 
 	return handler;
 }
@@ -641,6 +742,33 @@ static int legacy_pm_power_off(struct sys_off_data *data)
 
 static void do_kernel_power_off_prepare(void)
 {
+	struct notifier_block *nb;
+	bool found = false;
+
+	pr_emerg("power_off_prep_handler_list invoke\n");
+
+	down_read(&power_off_prep_handler_list.rwsem);
+	for (nb = rcu_dereference_raw(power_off_prep_handler_list.head);
+	     nb;
+	     nb = rcu_dereference_raw(nb->next)) {
+		found = true;
+		if (nb->notifier_call == sys_off_notify) {
+			struct sys_off_handler *handler;
+			char sym_name[KSYM_SYMBOL_LEN];
+
+			handler = container_of(nb, struct sys_off_handler, nb);
+			sprint_symbol(sym_name, (unsigned long)handler->sys_off_cb);
+			pr_emerg("power_off_prep_handler_list call: priority=%d notifier=%ps sys_off_cb=%s\n",
+				 nb->priority, nb->notifier_call, sym_name);
+		} else {
+			pr_emerg("power_off_prep_handler_list call: priority=%d notifier=%ps\n",
+				 nb->priority, nb->notifier_call);
+		}
+	}
+	if (!found)
+		pr_emerg("power_off_prep_handler_list invoke: no handlers\n");
+	up_read(&power_off_prep_handler_list.rwsem);
+
 	blocking_notifier_call_chain(&power_off_prep_handler_list, 0, NULL);
 }
 
@@ -655,6 +783,8 @@ static void do_kernel_power_off_prepare(void)
 void do_kernel_power_off(void)
 {
 	struct sys_off_handler *sys_off = NULL;
+	struct notifier_block *nb;
+	bool found = false;
 
 	/*
 	 * Register sys-off handlers for legacy PM callback. This allows
@@ -667,6 +797,30 @@ void do_kernel_power_off(void)
 		sys_off = register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
 						   SYS_OFF_PRIO_DEFAULT,
 						   legacy_pm_power_off, NULL);
+
+	pr_emerg("power_off_handler_list invoke\n");
+
+	rcu_read_lock();
+	for (nb = rcu_dereference_raw(power_off_handler_list.head);
+	     nb;
+	     nb = rcu_dereference_raw(nb->next)) {
+		found = true;
+		if (nb->notifier_call == sys_off_notify) {
+			struct sys_off_handler *handler;
+			char sym_name[KSYM_SYMBOL_LEN];
+
+			handler = container_of(nb, struct sys_off_handler, nb);
+			sprint_symbol(sym_name, (unsigned long)handler->sys_off_cb);
+			pr_emerg("power_off_handler_list call: priority=%d notifier=%ps sys_off_cb=%s\n",
+				 nb->priority, nb->notifier_call, sym_name);
+		} else {
+			pr_emerg("power_off_handler_list call: priority=%d notifier=%ps\n",
+				 nb->priority, nb->notifier_call);
+		}
+	}
+	if (!found)
+		pr_emerg("power_off_handler_list invoke: no handlers\n");
+	rcu_read_unlock();
 
 	atomic_notifier_call_chain(&power_off_handler_list, 0, NULL);
 
