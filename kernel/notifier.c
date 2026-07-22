@@ -2,6 +2,7 @@
 #include <linux/kdebug.h>
 #include <linux/kprobes.h>
 #include <linux/export.h>
+#include <linux/kallsyms.h>
 #include <linux/notifier.h>
 #include <linux/rcupdate.h>
 #include <linux/vmalloc.h>
@@ -10,6 +11,7 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/notifier.h>
 
+/* XXX: All the notifications which need to be made during shutdown */
 /*
  *	Notifier list for kernel code which wants to be called
  *	at shutdown. This is used to stop any idling DMA operations
@@ -76,6 +78,7 @@ static int notifier_call_chain(struct notifier_block **nl,
 {
 	int ret = NOTIFY_DONE;
 	struct notifier_block *nb, *next_nb;
+	char sym[KSYM_SYMBOL_LEN];
 
 	nb = rcu_dereference_raw(*nl);
 
@@ -89,6 +92,8 @@ static int notifier_call_chain(struct notifier_block **nl,
 			continue;
 		}
 #endif
+		sprintf(sym, "%ps", nb->notifier_call);
+		pr_info("notifier_call_chain: calling %s\n", sym);
 		trace_notifier_run((void *)nb->notifier_call);
 		ret = nb->notifier_call(nb, val, v);
 
