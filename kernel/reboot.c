@@ -274,6 +274,7 @@ static void do_kernel_restart_prepare(void)
  */
 void kernel_restart(char *cmd)
 {
+	pr_info("HACK: kernel_restart()\n");
 	kernel_restart_prepare(cmd);
 	do_kernel_restart_prepare();
 	migrate_to_reboot_cpu();
@@ -719,6 +720,7 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 	char buffer[256];
 	int ret = 0;
 
+	pr_info("HACK: sys_reboot()\n");
 	/* We only trust the superuser with rebooting the system. */
 	if (!ns_capable(pid_ns->user_ns, CAP_SYS_BOOT))
 		return -EPERM;
@@ -736,7 +738,8 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 	 * pid_namespace, the command is handled by reboot_pid_ns() which will
 	 * call do_exit().
 	 */
-	ret = reboot_pid_ns(pid_ns, cmd);
+	ret = reboot_pid_ns(pid_ns, cmd); /* XXX: THis os dont own the real HW*/
+
 	if (ret)
 		return ret;
 
@@ -751,27 +754,33 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 	mutex_lock(&system_transition_mutex);
 	switch (cmd) {
 	case LINUX_REBOOT_CMD_RESTART:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_RESTART)\n");
 		kernel_restart(NULL);
 		break;
 
 	case LINUX_REBOOT_CMD_CAD_ON:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_CAD_ON)\n");
 		C_A_D = 1;
 		break;
 
 	case LINUX_REBOOT_CMD_CAD_OFF:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_CAD_OFF)\n");
 		C_A_D = 0;
 		break;
 
 	case LINUX_REBOOT_CMD_HALT:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_HALT)\n");
 		kernel_halt();
 		do_exit(0);
 
 	case LINUX_REBOOT_CMD_POWER_OFF:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_POWER_OFF)\n");
 		kernel_power_off();
 		do_exit(0);
 		break;
 
 	case LINUX_REBOOT_CMD_RESTART2:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_RESTART2)\n");
 		ret = strncpy_from_user(&buffer[0], arg, sizeof(buffer) - 1);
 		if (ret < 0) {
 			ret = -EFAULT;
@@ -784,12 +793,14 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 
 #ifdef CONFIG_KEXEC_CORE
 	case LINUX_REBOOT_CMD_KEXEC:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_KEXEC)\n");
 		ret = kernel_kexec();
 		break;
 #endif
 
 #ifdef CONFIG_HIBERNATION
 	case LINUX_REBOOT_CMD_SW_SUSPEND:
+		pr_info("HACK: sys_reboot(LINUX_REBOOT_CMD_SW_SUSPEND)\n");
 		ret = hibernate();
 		break;
 #endif

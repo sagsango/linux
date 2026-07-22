@@ -4740,6 +4740,7 @@ void device_shutdown(void)
 {
 	struct device *dev, *parent;
 
+	pr_info("HACK: we are going to shutdown!\n");
 	wait_for_device_probe();
 	device_block_probing();
 
@@ -4752,6 +4753,11 @@ void device_shutdown(void)
 	 * devices offline, even as the system is shutting down.
 	 */
 	while (!list_empty(&devices_kset->list)) {
+		const char *bus_name, *class_name, *driver_name;
+		const char *parent_name;
+		const struct fwnode_handle *fwnode;
+		bool class_shutdown_pre, bus_shutdown, driver_shutdown;
+
 		dev = list_entry(devices_kset->list.prev, struct device,
 				kobj.entry);
 
@@ -4774,6 +4780,24 @@ void device_shutdown(void)
 			device_lock(parent);
 		device_lock(dev);
 
+		bus_name = dev->bus ? dev->bus->name : "none";
+		class_name = dev->class ? dev->class->name : "none";
+		driver_name = dev->driver ? dev->driver->name : "none";
+		parent_name = parent ? dev_name(parent) : "none";
+		fwnode = dev_fwnode(dev);
+		class_shutdown_pre = dev->class && dev->class->shutdown_pre;
+		bus_shutdown = dev->bus && dev->bus->shutdown;
+		driver_shutdown = dev->driver && dev->driver->shutdown;
+
+		dev_info(dev,
+			"shutdown: parent=%s class=%s bus=%s driver=%s fwnode=%pfwf of_node=%pOF can_wakeup=%u may_wakeup=%u pm_enabled=%u pm_suspended=%u async_suspend=%u direct_complete=%u no_pm=%u shutdown_pre=%u bus_cb=%u drv_cb=%u\n",
+			parent_name, class_name, bus_name, driver_name,
+			fwnode, dev_of_node(dev), dev->power.can_wakeup,
+			device_may_wakeup(dev), pm_runtime_enabled(dev),
+			pm_runtime_suspended(dev), dev->power.async_suspend,
+			dev->power.direct_complete, dev->power.no_pm,
+			class_shutdown_pre, bus_shutdown, driver_shutdown);
+
 		/* Don't allow any more runtime suspends */
 		pm_runtime_get_noresume(dev);
 		pm_runtime_barrier(dev);
@@ -4781,16 +4805,24 @@ void device_shutdown(void)
 		if (dev->class && dev->class->shutdown_pre) {
 			if (initcall_debug)
 				dev_info(dev, "shutdown_pre\n");
+			dev_info(dev, "shutdown callback: class->shutdown_pre=%ps\n",
+				dev->class->shutdown_pre);
 			dev->class->shutdown_pre(dev);
 		}
 		if (dev->bus && dev->bus->shutdown) {
 			if (initcall_debug)
 				dev_info(dev, "shutdown\n");
+			dev_info(dev, "shutdown callback: bus->shutdown=%ps\n",
+				dev->bus->shutdown);
 			dev->bus->shutdown(dev);
 		} else if (dev->driver && dev->driver->shutdown) {
 			if (initcall_debug)
 				dev_info(dev, "shutdown\n");
+			dev_info(dev, "shutdown callback: driver->shutdown=%ps\n",
+				dev->driver->shutdown);
 			dev->driver->shutdown(dev);
+		} else {
+			dev_info(dev, "shutdown callback: none\n");
 		}
 
 		device_unlock(dev);

@@ -313,6 +313,7 @@ static struct ctl_table pid_ns_ctl_table[] = {
 
 int reboot_pid_ns(struct pid_namespace *pid_ns, int cmd)
 {
+	pr_info("HACK: reboot_pid_ns()\n");
 	if (pid_ns == &init_pid_ns)
 		return 0;
 

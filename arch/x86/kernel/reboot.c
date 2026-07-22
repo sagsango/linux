@@ -1,3 +1,4 @@
+/* TODO: arch reboot */
 // SPDX-License-Identifier: GPL-2.0
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -626,6 +627,8 @@ void __attribute__((weak)) mach_reboot_fixups(void)
  */
 static void native_machine_emergency_restart(void)
 {
+
+	pr_info("HACK: native_machine_emergency_restart()\n");
 	int i;
 	int attempt = 0;
 	int orig_reboot_type = reboot_type;
