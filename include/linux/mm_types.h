@@ -37,6 +37,7 @@ struct mem_cgroup;
  * This is the physical page/frame which will get mapped to the page
  * table, unlink xv6 it have metadata too
  */
+
 /*
  * Each physical page in the system has a struct page associated with
  * it to keep track of whatever it is we are using the page for at the
@@ -70,11 +71,29 @@ struct mem_cgroup;
  * bits of struct page, we align all struct pages to double-word boundaries,
  * and ensure that 'freelist' is aligned within struct slab.
  */
+
 #ifdef CONFIG_HAVE_ALIGNED_STRUCT_PAGE
 #define _struct_page_alignment	__aligned(2 * sizeof(unsigned long))
 #else
 #define _struct_page_alignment	__aligned(sizeof(unsigned long))
 #endif
+
+enum page_status {
+	UNUSED,
+	MAPED,
+	UNMAPPED,
+	SWAPED_OUT, // now its free but we want to track the status
+};
+
+struct page_life_cycle_node {
+	enum page_status st;
+	unsigned long pid;
+	struct list_head list;
+};
+
+struct page_metadata {
+	struct list_head page_life_cycle;
+};
 
 struct page {
 	unsigned long flags;		/* Atomic flags, some possibly
@@ -184,8 +203,11 @@ struct page {
 	/* Usage count. *DO NOT USE DIRECTLY*. See page_ref.h */
 	atomic_t _refcount;
 
+	struct page_metadata page_metadata;
+
+	unsigned long page_status;
 #ifdef CONFIG_MEMCG
-	unsigned long memcg_data;
+struct list_head list	unsigned long memcg_data;
 #endif
 
 	/*
@@ -260,6 +282,7 @@ typedef struct {
 	unsigned long val;
 } swp_entry_t;
 
+/* XXX: folio */
 /**
  * struct folio - Represents a contiguous set of bytes.
  * @flags: Identical to the page flags.
